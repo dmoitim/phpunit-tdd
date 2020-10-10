@@ -9,6 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 class LeilaoTeste extends TestCase
 {
+    public function testLeilaoNaoDeveReceberTestesRepetidos()
+    {
+        $leilao = new Leilao('Variante');
+
+        $ana = new Usuario('Ana');
+        $leilao->recebeLance(new Lance($ana, 1000));
+        $leilao->recebeLance(new Lance($ana, 1500));
+
+        static::assertCount(1, $leilao->getLances());
+        static::assertEquals(1000, $leilao->getLances()[0]->getValor());
+    }
+
     /**
      * @dataProvider geraLances
      */
@@ -16,7 +28,7 @@ class LeilaoTeste extends TestCase
     {
         static::assertCount($qtdLances, $leilao->getLances());
 
-        foreach ($valores as $i => $valorEsperado) { 
+        foreach ($valores as $i => $valorEsperado) {
             static::assertEquals($valorEsperado, $leilao->getLances()[$i]->getValor());
         }
     }

@@ -1,4 +1,5 @@
 Leilao Teste (Alura\Leilao\Tests\Model\LeilaoTeste)
+ [x] Leilao nao deve receber testes repetidos
  [x] Leilao deve receber lances with data set "leilao-2-lances"
  [x] Leilao deve receber lances with data set "leilao-1-lance"
 
