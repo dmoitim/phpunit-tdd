@@ -67,6 +67,28 @@ class AvaliadorTest extends TestCase
         static::assertEquals(1700, $maiores[2]->getValor());
     }
 
+    public function testLeilaoVazioNaoPodeSerAvaliado()
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Não é possível avaliar leilão vazio.');
+
+        $leilao = new Leilao('Fusca azul');
+        $this->leiloeiro->avalia($leilao);
+    }
+
+    public function testLeilaoFinalizadoNaoPodeSerAvaliado()
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Leilão já finalizado.');
+
+        $leilao = new Leilao('Fiat 147 0 KM');
+
+        $leilao->recebeLance(new Lance(new Usuario('Teste'), 2000));
+        $leilao->finaliza();
+
+        $this->leiloeiro->avalia($leilao);
+    }
+
     /*------------ DADOS ------------*/
     public function leilaoEmOrdemCrescente()
     {
@@ -117,13 +139,5 @@ class AvaliadorTest extends TestCase
         return [
             'ordem-aleatoria' => [$leilao]
         ];
-    }
-
-    public function testLeilaoVazioNaoPodeSerAvaliado() {
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Não é possível avaliar leilão vazio.');
-        
-        $leilao = new Leilao('Fusca azul');
-        $this->leiloeiro->avalia($leilao);
     }
 }
