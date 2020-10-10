@@ -18,13 +18,13 @@ class Leilao
     public function recebeLance(Lance $lance)
     {
         if (!empty($this->lances) && $this->lanceEhDoUltimoUsuario($lance)) {
-            return;
+            throw new \DomainException('Usuário não pode propor dois lances consecutivos.');
         }
 
         $totalLancesUsuario = $this->quantidadeDeLancesPorUsuario($lance->getUsuario());
 
         if ($totalLancesUsuario >= 5) {
-            return;
+            throw new \DomainException('Usuário não pode propor mais de cinco lances por leilão.');
         }
 
         $this->lances[] = $lance;
